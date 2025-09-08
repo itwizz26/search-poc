@@ -1,0 +1,7 @@
+backend:
+  build: ./backend
+  volumes:
+    - ./db:/var/www/db
+    - ./backend/storage:/var/www/storage
+  ports:
+    - "8080:80"

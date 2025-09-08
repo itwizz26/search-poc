@@ -1,0 +1,11 @@
+<h1>{{ title }}</h1>
+
+<nav>
+  <button (click)="view='docs'">Documents</button>
+  <button (click)="view='search'">Search</button>
+</nav>
+
+<div [ngSwitch]="view">
+  <app-documents *ngSwitchCase="'docs'"></app-documents>
+  <app-search *ngSwitchCase="'search'"></app-search>
+</div>

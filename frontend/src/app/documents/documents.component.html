@@ -1,0 +1,14 @@
+<h2>Documents</h2>
+
+<input type="file" (change)="onFileSelected($event)" />
+<button (click)="upload()" [disabled]="loading">Upload</button>
+
+<p *ngIf="loading">Uploading...</p>
+<p *ngIf="error" style="color:red">{{ error }}</p>
+
+<ul>
+  <li *ngFor="let doc of documents">
+    <strong>{{ doc.title }}</strong>
+    <button (click)="delete(doc.id)">Delete</button>
+  </li>
+</ul>

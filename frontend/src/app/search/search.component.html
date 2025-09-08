@@ -1,0 +1,15 @@
+<h2>Search</h2>
+
+<input [(ngModel)]="query" placeholder="Enter query" />
+<button (click)="doSearch()">Search</button>
+
+<div *ngIf="metrics.count">
+  <p>{{ metrics.count }} results ({{ metrics.time | number:'1.0-0' }} ms)</p>
+</div>
+
+<ul>
+  <li *ngFor="let r of results">
+    <strong>{{ r.title }}</strong>
+    <p [innerHTML]="highlight(r.snippet)"></p>
+  </li>
+</ul>
