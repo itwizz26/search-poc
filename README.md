@@ -65,8 +65,8 @@ php -S localhost:8080 -t public
 4. The API is now available here
 
 ```
-* htpp://localhost:8080/api/documents
-* htpp://localhost:8080/api/seach?q=keyword
+* htpp://localhost:8080/documents
+* htpp://localhost:8080/seach?q=keyword
 ```
 
 A SQLite db is automaticlly created and seeded with a sample document.
@@ -116,7 +116,7 @@ DELETE /api/documents/{id} // Delete Document
 
 ## Notes
 
-Proxy config (proxy.conf.json) ensures frontend /api requests map to backend at http://localhost:8080/api.
+Proxy config (proxy.conf.json) ensures frontend /api requests map to backend at http://localhost:8080.
 
 SQLite migration: The backend automatically creates the documents table and inserts a sample record if empty.
 
