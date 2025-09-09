@@ -1,8 +1,3 @@
----
-
-## **SOLUTION.md**
-
-```markdown
 # Solution Overview
 
 This document explains the design decisions, trade-offs, and architecture of the Document Search POC.
@@ -37,13 +32,13 @@ This document explains the design decisions, trade-offs, and architecture of the
   - `DocumentsComponent` – list & delete documents
   - `SearchComponent` – real-time search with highlight
 - **Proxy config** (`proxy.conf.json`) routes API calls to backend on port 8080.
-- Fully Termux-compatible (Node 22–24, npm 11), with **no native modules**.
+- Node 22–24, npm 11, with **no native modules**.
 - Responsive UI, minimal realistic design, clean code style.
 
 **Trade-offs:**
 - Angular chosen for SPA capabilities and easy real-time search UI.
 - Zone.js v0.14.x used to match Angular 18 requirements.
-- All native modules (lmdb, sqlite3) removed to avoid Termux incompatibility.
+- All native modules (lmdb, sqlite3) removed for ease of setup.
 
 ---
 
@@ -54,7 +49,7 @@ This document explains the design decisions, trade-offs, and architecture of the
 3. **SQLite** allows zero-dependency backend with auto-table creation.
 4. **Angular SPA** provides clean UI, with proxy for API calls to simplify development.
 5. **Preloaded document** demonstrates search capability immediately after setup.
-6. **Frontend package.json** strictly contains only JS dependencies to avoid Termux build issues.
+6. **Frontend package.json** strictly contains only JS dependencies to avoid build issues.
 
 ---
 

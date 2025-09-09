@@ -3,14 +3,14 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-// Use container from bootstrap
+// Bootstrap container
 /** @var Psr\Container\ContainerInterface $container */
 global $container;
 
 // ------------------- DOCUMENTS ROUTES ------------------- //
 
 // List all documents
-$app->get('/documents', function (Request $request, Response $response) use ($container) {
+$app->get('/api/documents', function (Request $request, Response $response) use ($container) {
     $db = $container->get('db');
     $stmt = $db->query("SELECT id, title FROM documents ORDER BY id DESC");
     $docs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -20,7 +20,7 @@ $app->get('/documents', function (Request $request, Response $response) use ($co
 });
 
 // Upload a new document
-$app->post('/documents', function (Request $request, Response $response) use ($container) {
+$app->post('/api/documents', function (Request $request, Response $response) use ($container) {
     $uploadedFiles = $request->getUploadedFiles();
     if (!isset($uploadedFiles['file'])) {
         $response->getBody()->write(json_encode(['error' => 'No file uploaded']));
@@ -40,7 +40,7 @@ $app->post('/documents', function (Request $request, Response $response) use ($c
 });
 
 // Delete a document by ID
-$app->delete('/documents/{id}', function (Request $request, Response $response, $args) use ($container) {
+$app->delete('/api/documents/{id}', function (Request $request, Response $response, $args) use ($container) {
     $id = (int)$args['id'];
     $db = $container->get('db');
     $stmt = $db->prepare("DELETE FROM documents WHERE id = :id");
@@ -53,7 +53,7 @@ $app->delete('/documents/{id}', function (Request $request, Response $response, 
 // ------------------- SEARCH ROUTE ------------------- //
 
 // Search documents
-$app->get('/search', function (Request $request, Response $response) use ($container) {
+$app->get('/api/search', function (Request $request, Response $response) use ($container) {
     $query = $request->getQueryParams()['q'] ?? '';
 
     $db = $container->get('db');
