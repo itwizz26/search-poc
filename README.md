@@ -107,6 +107,7 @@ http://localhost:4200/search
 
 ```
 GET /api/documents // List Documents
+POST /api/documents // Save Documents
 GET /api/search?q=term // Search Documents
 DELETE /api/documents/{id} // Delete Document
 ```

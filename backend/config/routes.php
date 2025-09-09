@@ -10,7 +10,7 @@ global $container;
 // ------------------- DOCUMENTS ROUTES ------------------- //
 
 // List all documents
-$app->get('/api/documents', function (Request $request, Response $response) use ($container) {
+$app->get('/documents', function (Request $request, Response $response) use ($container) {
     $db = $container->get('db');
     $stmt = $db->query("SELECT id, title FROM documents ORDER BY id DESC");
     $docs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -20,7 +20,7 @@ $app->get('/api/documents', function (Request $request, Response $response) use 
 });
 
 // Upload a new document
-$app->post('/api/documents', function (Request $request, Response $response) use ($container) {
+$app->post('/documents', function (Request $request, Response $response) use ($container) {
     $uploadedFiles = $request->getUploadedFiles();
     if (!isset($uploadedFiles['file'])) {
         $response->getBody()->write(json_encode(['error' => 'No file uploaded']));
@@ -40,7 +40,7 @@ $app->post('/api/documents', function (Request $request, Response $response) use
 });
 
 // Delete a document by ID
-$app->delete('/api/documents/{id}', function (Request $request, Response $response, $args) use ($container) {
+$app->delete('/documents/{id}', function (Request $request, Response $response, $args) use ($container) {
     $id = (int)$args['id'];
     $db = $container->get('db');
     $stmt = $db->prepare("DELETE FROM documents WHERE id = :id");
@@ -53,7 +53,7 @@ $app->delete('/api/documents/{id}', function (Request $request, Response $respon
 // ------------------- SEARCH ROUTE ------------------- //
 
 // Search documents
-$app->get('/api/search', function (Request $request, Response $response) use ($container) {
+$app->get('/search', function (Request $request, Response $response) use ($container) {
     $query = $request->getQueryParams()['q'] ?? '';
 
     $db = $container->get('db');
