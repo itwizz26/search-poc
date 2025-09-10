@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Document Search';
-  view: 'docs' | 'search' = 'docs';
 }

@@ -1,11 +1,15 @@
-<h1>{{ title }}</h1>
+<mat-toolbar color="primary">
+  <span>{{ title }}</span>
+</mat-toolbar>
 
-<nav>
-  <button (click)="view='docs'">Documents</button>
-  <button (click)="view='search'">Search</button>
-</nav>
+<div class="button-bar">
+  <button mat-raised-button color="accent" routerLink="/upload">
+    <mat-icon>cloud_upload</mat-icon> Upload Document
+  </button>
 
-<div [ngSwitch]="view">
-  <app-documents *ngSwitchCase="'docs'"></app-documents>
-  <app-search *ngSwitchCase="'search'"></app-search>
+  <button mat-raised-button color="primary" routerLink="/search">
+    <mat-icon>search</mat-icon> Search Documents
+  </button>
 </div>
+
+<router-outlet></router-outlet>

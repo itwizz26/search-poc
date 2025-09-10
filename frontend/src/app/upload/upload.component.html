@@ -1,0 +1,14 @@
+<mat-card>
+  <h2>Upload Document</h2>
+
+  <input type="file" (change)="onFileSelected($event)" />
+
+  <mat-progress-spinner
+    *ngIf="uploading"
+    mode="indeterminate"
+    diameter="30"
+    style="margin-top: 10px;">
+  </mat-progress-spinner>
+
+  <p *ngIf="message">{{ message }}</p>
+</mat-card>

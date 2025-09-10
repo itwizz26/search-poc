@@ -1,37 +1,42 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
-
 use DI\Container;
 use Slim\Factory\AppFactory;
 
-// Settings
+require __DIR__ . '/vendor/autoload.php';
+
+// Load settings
 $settings = require __DIR__ . '/config/settings.php';
 
-// Container
+// Create PHP-DI container
 $container = new Container();
 
-// Load dependencies — must be a callable
-$dependencies = require __DIR__ . '/config/dependencies.php';
-$dependencies($container, $settings); 
+// Make settings available in container
+$container->set('settings', $settings['settings']);
+
+// Load dependencies
+require __DIR__ . '/config/dependencies.php';
+
+// Set container to AppFactory
+AppFactory::setContainer($container);
 
 // Create Slim app
-AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-// Middlewares
+// Middleware: CORS, JSON parsing, etc.
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
-
-// CORS
 $app->add(function ($request, $handler) {
     $response = $handler->handle($request);
     return $response
         ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
 
 // Load routes
 require __DIR__ . '/config/routes.php';
+
+// Error middleware
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 return $app;

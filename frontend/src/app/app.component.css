@@ -1,7 +1,9 @@
-nav {
-  margin-bottom: 1rem;
+.button-bar {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
 }
 
-button {
-  margin-right: 0.5rem;
+.button-bar button {
+  flex: 1; /* optional: makes them equal width */
 }

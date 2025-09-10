@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { DocumentService, Document } from '../document.service';
 
 @Component({
   selector: 'app-search',
@@ -8,23 +8,27 @@ import { ApiService } from '../services/api.service';
 })
 export class SearchComponent {
   query = '';
-  results: any[] = [];
-  metrics: { time?: number; count?: number } = {};
+  results: Document[] = [];
+  loading = false;
 
-  constructor(private api: ApiService) {}
+  constructor(private documentService: DocumentService) {}
 
-  doSearch() {
-    if (!this.query.trim()) return;
-    const start = performance.now();
-    this.api.search(this.query).subscribe((res: any) => {
-      this.results = res.results;
-      const end = performance.now();
-      this.metrics = { time: end - start, count: res.results.length };
+  onSearch() {
+    if (!this.query.trim()) {
+      this.results = [];
+      return;
+    }
+
+    this.loading = true;
+    this.documentService.searchDocuments(this.query).subscribe({
+      next: (docs) => {
+        this.results = docs;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loading = false;
+      }
     });
-  }
-
-  highlight(content: string): string {
-    const regex = new RegExp(`(${this.query})`, 'gi');
-    return content.replace(regex, '<mark>$1</mark>');
   }
 }

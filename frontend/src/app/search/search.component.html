@@ -1,15 +1,30 @@
-<h2>Search</h2>
+<mat-card>
+  <h2>Search Documents</h2>
 
-<input [(ngModel)]="query" placeholder="Enter query" />
-<button (click)="doSearch()">Search</button>
+  <mat-form-field style="width: 100%;">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="query" (keyup.enter)="onSearch()" />
+  </mat-form-field>
 
-<div *ngIf="metrics.count">
-  <p>{{ metrics.count }} results ({{ metrics.time | number:'1.0-0' }} ms)</p>
-</div>
+  <button mat-raised-button color="primary" (click)="onSearch()">
+    <mat-icon>search</mat-icon> Search
+  </button>
 
-<ul>
-  <li *ngFor="let r of results">
-    <strong>{{ r.title }}</strong>
-    <p [innerHTML]="highlight(r.snippet)"></p>
-  </li>
-</ul>
+  <mat-progress-spinner
+    *ngIf="loading"
+    mode="indeterminate"
+    diameter="30"
+    style="margin-top: 10px;">
+  </mat-progress-spinner>
+
+  <mat-list *ngIf="results.length > 0">
+    <mat-list-item *ngFor="let doc of results">
+      <div>
+        <strong>{{ doc.title }}</strong><br />
+        <span [innerHTML]="doc.snippet"></span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <p *ngIf="!loading && results.length === 0 && query">No results found.</p>
+</mat-card>
