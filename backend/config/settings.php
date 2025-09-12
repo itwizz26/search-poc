@@ -3,7 +3,7 @@ return [
     'settings' => [
         'displayErrorDetails' => true,
         'db' => [
-            'sqlite_path' => __DIR__ . '/../documents.sqlite'
+            'sqlite_path' => __DIR__ . '/../db/documents.sqlite'
         ]
     ]
 ];
