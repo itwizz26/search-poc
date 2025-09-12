@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../document.service';
 
 @Component({
@@ -6,29 +6,54 @@ import { DocumentService } from '../document.service';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
 })
-export class UploadComponent {
-  uploading = false;
-  message = '';
+export class UploadComponent implements OnInit {
+  selectedFile: File | null = null;
+  documents: any[] = [];
+  message: string = '';
+  loading = false;
 
   constructor(private documentService: DocumentService) {}
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
+  ngOnInit(): void {
+    this.loadDocuments();
+  }
 
-    this.uploading = true;
-    this.message = '';
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] || null;
+  }
 
-    this.documentService.uploadDocument(file).subscribe({
+  onUpload(): void {
+    if (!this.selectedFile) return;
+
+    this.loading = true;
+    this.documentService.uploadDocument(this.selectedFile).subscribe({
       next: () => {
-        this.message = '✅ Upload successful!';
-        this.uploading = false;
+        this.message = 'Upload successful!';
+        this.selectedFile = null;
+        this.loadDocuments(); // reload list
+        this.loading = false;
       },
-      error: (err) => {
-        console.error(err);
-        this.message = '❌ Upload failed';
-        this.uploading = false;
+      error: () => {
+        this.message = 'Upload failed!';
+        this.loading = false;
       }
+    });
+  }
+
+  loadDocuments(): void {
+    this.documentService.getDocuments().subscribe({
+      next: (docs) => this.documents = docs,
+      error: (err) => console.error('Failed to load documents:', err)
+    });
+  }
+
+  deleteDocument(id: number): void {
+    this.documentService.deleteDocument(id).subscribe({
+      next: () => {
+        this.message = 'Document deleted!';
+        this.loadDocuments(); // reload after delete
+      },
+      error: () => this.message = 'Delete failed!'
     });
   }
 }

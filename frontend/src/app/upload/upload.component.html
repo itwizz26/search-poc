@@ -1,14 +1,28 @@
-<mat-card>
+<div class="container">
   <h2>Upload Document</h2>
 
   <input type="file" (change)="onFileSelected($event)" />
-
-  <mat-progress-spinner
-    *ngIf="uploading"
-    mode="indeterminate"
-    diameter="30"
-    style="margin-top: 10px;">
-  </mat-progress-spinner>
+  <button mat-raised-button color="primary" (click)="onUpload()" [disabled]="!selectedFile">
+    Upload
+  </button>
 
   <p *ngIf="message">{{ message }}</p>
-</mat-card>
+
+  <h3>Uploaded Documents</h3>
+  <mat-card *ngFor="let doc of documents" class="doc-card">
+    <mat-card-title>{{ doc.title }}</mat-card-title>
+    <mat-card-subtitle>{{ doc.filename }}</mat-card-subtitle>
+    <mat-card-content>
+      <p>{{ doc.content | slice:0:100 }}...</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="warn" (click)="deleteDocument(doc.id)">
+        Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div *ngIf="!loading && documents.length === 0">
+    <p>No documents uploaded yet.</p>
+  </div>
+</div>

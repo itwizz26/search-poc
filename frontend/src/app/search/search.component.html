@@ -3,7 +3,10 @@
 
   <mat-form-field style="width: 100%;">
     <mat-label>Search</mat-label>
-    <input matInput [(ngModel)]="query" (keyup.enter)="onSearch()" />
+    <input
+      matInput
+      [(ngModel)]="query"
+      (keyup.enter)="onSearch()" />
   </mat-form-field>
 
   <button mat-raised-button color="primary" (click)="onSearch()">
@@ -17,14 +20,16 @@
     style="margin-top: 10px;">
   </mat-progress-spinner>
 
-  <mat-list *ngIf="results.length > 0">
+  <mat-list *ngIf="results.length > 0 && !loading">
     <mat-list-item *ngFor="let doc of results">
       <div>
         <strong>{{ doc.title }}</strong><br />
-        <span [innerHTML]="doc.snippet"></span>
+        <span [innerHTML]="doc.highlighted_content"></span>
       </div>
     </mat-list-item>
   </mat-list>
 
-  <p *ngIf="!loading && results.length === 0 && query">No results found.</p>
+  <p *ngIf="!loading && results.length === 0 && query">
+    No results found.
+  </p>
 </mat-card>

@@ -1,5 +1,3 @@
 <?php
-require __DIR__ . '/../bootstrap.php';
-
-// $app is returned by bootstrap.php
+$app = require __DIR__ . '/../bootstrap.php';
 $app->run();

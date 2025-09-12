@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DocumentService, Document } from '../document.service';
+import { DocumentService } from '../document.service';
 
 @Component({
   selector: 'app-search',
@@ -7,9 +7,9 @@ import { DocumentService, Document } from '../document.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent {
-  query = '';
-  results: Document[] = [];
-  loading = false;
+  query: string = '';
+  results: any[] = [];
+  loading: boolean = false;
 
   constructor(private documentService: DocumentService) {}
 
@@ -21,11 +21,11 @@ export class SearchComponent {
 
     this.loading = true;
     this.documentService.searchDocuments(this.query).subscribe({
-      next: (docs) => {
+      next: (docs: any[]) => {
         this.results = docs;
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         this.loading = false;
       }
